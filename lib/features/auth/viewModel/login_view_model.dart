@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
@@ -63,8 +65,7 @@ class LoginViewModel extends GetxController {
 
     if (res != null) {
       final UserModel user = UserModel.fromMap(res['data']['user']);
-      await AuthLocalRepo().saveToken(res['data']['token']);
-
+      await AuthLocalRepo().saveToken(res['data']['token'], jsonEncode(user));
       await userViewModel.fetchUserModel(user);
 
       Get.to(() => BottomNavigationScreen());

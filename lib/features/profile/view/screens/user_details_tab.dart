@@ -38,7 +38,6 @@ class _UserDetailsState extends State<UserDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
             Text(
               'User Details',
               style: TextStyle(

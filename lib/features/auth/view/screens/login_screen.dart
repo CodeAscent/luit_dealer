@@ -55,8 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 30),
-                  CustomStarText(label: 'Phone Number'),
                   SizedBox(height: 10),
                   CustomTextField(
                     controller: phoneController,

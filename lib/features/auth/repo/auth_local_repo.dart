@@ -10,14 +10,21 @@ import 'package:luit_dealer/features/auth/viewModel/user_view_model.dart';
 
 class AuthLocalRepo {
   final userViewModel = Get.find<UserViewModel>();
-  saveToken(String token) async {
-    // await LocalRepo.saveLocalData('user', userData);
+  saveToken(String token, String userData) async {
+    await LocalRepo.saveLocalData('user', userData);
     // await LocalRepo.saveLocalData('userStats', userStats);
     await LocalRepo.saveLocalData('token', token);
   }
 
   fetchLoginData() async {
-    final res = await HttpWrapper.getRequest('get_profile');
+    final res = await LocalRepo.fetchLocalData('user');
+    final data = jsonDecode(res);
+    return data;
+  }
+
+  fetchDealerProfile() async {
+    final res = await HttpWrapper.getRequest('dealer/get_profile');
+    Logger().f(res.body);
     final data = jsonDecode(res.body);
     if (res.statusCode == 200) {
       return data;
@@ -26,7 +33,7 @@ class AuthLocalRepo {
   }
 
   removeUserLoginData() async {
-    // await LocalRepo.removeLocalData('user');
+    await LocalRepo.removeLocalData('user');
     await LocalRepo.removeLocalData('token');
     // await LocalRepo.removeLocalData('userStats');
   }

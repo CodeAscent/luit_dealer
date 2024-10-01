@@ -19,7 +19,7 @@ void main() async {
   final userViewModel = Get.find<UserViewModel>();
 
   await LocalStorage().initLocalStorage();
-//   await userViewModel.fetchUserModel();
+  await userViewModel.fetchUserModel(null);
   FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
@@ -52,6 +52,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      builder: (context, child) {
+        return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(1.0),
+            ),
+            child: child!);
+      },
       themeMode: ThemeMode.dark,
       defaultTransition: Transition.cupertino,
       transitionDuration: Duration(milliseconds: 300),

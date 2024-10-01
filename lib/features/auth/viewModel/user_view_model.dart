@@ -14,7 +14,9 @@ class UserViewModel extends GetxController {
     if (token != null) {
       if (userData == null) {
         final res = await AuthLocalRepo().fetchLoginData();
-        user = UserModel.fromMap(res['original']['result']);
+        Logger().w(res);
+        user = UserModel.fromJson(res);
+        Logger().f(user);
       } else {
         user = userData;
       }
