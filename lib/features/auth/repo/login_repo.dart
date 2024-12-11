@@ -28,25 +28,70 @@ class LoginRepo {
   Future userLogin({
     required String number,
     required String password,
-    required String fcm_token,
+    required String salesOrDealer,
   }) async {
     try {
-      final res = await HttpWrapper.postRequest(login, {
+      final res = await HttpWrapper.postRequest('${salesOrDealer}/login', {
         "mobile_no": number,
         "password": password,
       });
-      
+
       final data = jsonDecode(res.body);
       if (res.statusCode == 200) {
         return data;
       } else {
-        customSnackbar(data['message'], ContentType.failure);
+        throw data['message'];
       }
-    } on ServerException catch (e) {
-      customSnackbar(e.message, ContentType.failure);
+    } catch (e) {
+      rethrow;
     }
-    return null;
   }
 
-  
+  Future resetPasswordOtpRequest({
+    required String number,
+    required String salesOrDealer,
+  }) async {
+    try {
+      final res = await HttpWrapper.postRequest(
+          '${salesOrDealer}/password_otp_request', {
+        "mobile": number,
+      });
+
+      final data = jsonDecode(res.body);
+      if (res.statusCode == 200) {
+        return data;
+      } else {
+        throw data['message'];
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future resetPassword({
+    required String number,
+    required String password,
+    required String salesOrDealer,
+    required String otp,
+    required String password_confirmation,
+  }) async {
+    try {
+      final res =
+          await HttpWrapper.postRequest('${salesOrDealer}/password_reset', {
+        "mobile": number,
+        "password": password,
+        "otp": otp,
+        "password_confirmation": password_confirmation,
+      });
+
+      final data = jsonDecode(res.body);
+      if (res.statusCode == 200) {
+        return data;
+      } else {
+        throw data['message'];
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

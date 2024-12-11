@@ -19,4 +19,18 @@ class NotificationViewmodel extends GetxController {
     loading.value = false;
     update();
   }
+
+  fetchNotificationsCount() async {
+    loading.value = true;
+    final res = await notificationRepo.getNotificationCount();
+    if (res['success'] == true) {
+      return res['count'];
+    } else {
+      return 0;
+    }
+  }
+  readNotifications() async {
+   await notificationRepo.readotifications();
+   
+  }
 }

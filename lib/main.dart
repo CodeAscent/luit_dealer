@@ -19,7 +19,7 @@ void main() async {
   final userViewModel = Get.find<UserViewModel>();
 
   await LocalStorage().initLocalStorage();
-  await userViewModel.fetchUserModel(null);
+  await userViewModel.fetchUserModel();
   FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
@@ -42,11 +42,11 @@ class _MyAppState extends State<MyApp> {
   final userViewModel = Get.find<UserViewModel>();
 
   void getFcmToken() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    // FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    String? token = await messaging.getToken();
-    loginViewModel.updateFCM(token!);
-    Logger().i('FCM Token: $token');
+    // String? token = await messaging.getToken();
+    // loginViewModel.updateFCM(token!);
+    // Logger().i('FCM Token: $token');
   }
 
   @override

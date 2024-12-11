@@ -9,21 +9,17 @@ import 'package:luit_dealer/features/auth/repo/auth_local_repo.dart';
 
 class UserViewModel extends GetxController {
   UserModel? user;
-  fetchUserModel(UserModel? userData) async {
+  fetchUserModel() async {
     final token = await LocalRepo.fetchLocalData('token');
     if (token != null) {
-      if (userData == null) {
-        final res = await AuthLocalRepo().fetchLoginData();
-        Logger().w(res);
-        user = UserModel.fromJson(res);
+      try {
+        final res = await AuthLocalRepo().fetchDealerOrSalesProfile();
+        print('----------> $res');
+        user = UserModel.fromMap(res['data']);
         Logger().f(user);
-      } else {
-        user = userData;
+      } catch (e) {
+        rethrow;
       }
-
-      //   await AuthLocalRepo().saveToken(user!.token!);
-    } else {
-      user = null;
     }
 
     update();

@@ -7,7 +7,9 @@ import 'package:luit_dealer/core/utils/formatter.dart';
 import 'package:luit_dealer/features/auth/viewModel/user_view_model.dart';
 import 'package:luit_dealer/features/lead/repo/lead_list_repo.dart';
 import 'package:luit_dealer/features/lead/view/screens/lead_details.dart';
+import 'package:luit_dealer/features/lead/view/screens/notifications_screen.dart';
 import 'package:luit_dealer/features/lead/viewmodel/lead_list_viewmodel.dart';
+import 'package:luit_dealer/features/lead/viewmodel/notification_viewmodel.dart';
 
 class LeadScreen extends StatefulWidget {
   const LeadScreen({super.key});
@@ -19,41 +21,116 @@ class LeadScreen extends StatefulWidget {
 class _LeadScreenState extends State<LeadScreen> {
   final userViewModel = Get.find<UserViewModel>();
   final leadListViewmodel = LeadListViewmodel(LeadListRepo());
+  List dataa = [];
+  int notifCount = 0;
+  final notificationViewmodel = Get.find<NotificationViewmodel>();
+
+  fetchData() async {
+    dataa = await leadListViewmodel.getLeadList();
+    return dataa;
+  }
+
+  fetchNotifications() async {
+    notifCount = await notificationViewmodel.fetchNotificationsCount();
+    setState(() {});
+  }
+
+  refresh() async {
+    await fetchData();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNotifications();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar(label: 'LUIT FAN CLUB', showLeading: false),
-      body: FutureBuilder(
-        future: leadListViewmodel.getLeadList(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    final data = snapshot.data[index];
-                    return LeadCard(data: data);
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: customAppBar(label: 'LUIT FAN CLUB', showLeading: false),
+          body: FutureBuilder(
+            future: fetchData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: dataa.length,
+                      itemBuilder: (context, index) {
+                        final data = dataa[index];
+                        return LeadCard(
+                          data: data,
+                          onTap: () {
+                            Get.to(() => LeadDetailsTabBar(
+                                      r_id: data['r_id'],
+                                    ))!
+                                .then((val) {
+                              refresh();
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Something went wrong'),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return SizedBox();
+            },
+          ),
+        ),
+        Positioned(
+            // top: 6,
+            right: 20,
+            child: SafeArea(
+              child: 
+              IconButton(
+                  onPressed: () {
+                    Get.to(() => NotificationsScreen())!.then((val) {
+                      fetchNotifications();
+                    });
                   },
-                ),
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Something went wrong'),
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return SizedBox();
-        },
-      ),
+                  icon: Stack(
+                    children: [
+                      Icon(
+                        Icons.notifications,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                      if (notifCount != 0)
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 10,
+                              child: Center(
+                                  child: Text(
+                                notifCount.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800),
+                              ))),
+                        )
+                    ],
+                  )),
+            ))
+      ],
     );
   }
 
@@ -109,21 +186,23 @@ class _LeadScreenState extends State<LeadScreen> {
 }
 
 class LeadCard extends StatelessWidget {
+  final void Function()? onTap;
   final dynamic data;
 
-  LeadCard({required this.data});
+  LeadCard({required this.data, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Get.to(() => LeadDetails(
-              data: data,
-            ));
-      },
+      onTap: onTap,
       child: Container(
+        margin: EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.orange.shade100, width: 1),
+          border: Border.all(
+              color: data['lead_priority'] == null
+                  ? Colors.green
+                  : Colors.orange.shade100,
+              width: 1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -159,11 +238,11 @@ class LeadCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 8),
-                      Flexible(
-                        child: Text(
-                          'Payment : ${data['payment_mode']?['payment_title'] ?? ''}',
-                        ),
-                      ),
+                      // Flexible(
+                      //   child: Text(
+                      //     'Payment : ${data['payment_mode']?['payment_title'] ?? ''}',
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(height: 4),
@@ -175,28 +254,29 @@ class LeadCard extends StatelessWidget {
               ),
             ),
             Divider(color: Colors.orange.shade100),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  _buildChip(
-                    'Lost Purchase',
-                    Icons.radio_button_checked,
-                  ),
-                  SizedBox(width: 8),
-                  _buildChip(
-                    data['payment_mode']?['payment_title'] ?? '',
-                    Icons.wallet,
-                  ),
-                  Spacer(),
-                  _buildChip(
-                    data['lead_priority']?['title'] ?? '',
-                    Icons.calendar_month,
-                  ),
-                  //   SizedBox(width: 8),
-                ],
-              ),
-            )
+            if (data['lead_priority'] != null)
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    _buildChip(
+                      'Lost Purchase',
+                      Icons.radio_button_checked,
+                    ),
+                    SizedBox(width: 8),
+                    _buildChip(
+                      data['payment_mode']?['payment_title'] ?? '',
+                      Icons.wallet,
+                    ),
+                    Spacer(),
+                    _buildChip(
+                      data['lead_priority']?['title'] ?? '',
+                      Icons.calendar_month,
+                    ),
+                    //   SizedBox(width: 8),
+                  ],
+                ),
+              )
           ],
         ),
       ),

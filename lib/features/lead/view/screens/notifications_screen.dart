@@ -11,8 +11,9 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notificationViewmodel = Get.find<NotificationViewmodel>();
-    return GetBuilder<NotificationViewmodel>(initState: (state) {
+    return GetBuilder<NotificationViewmodel>(initState: (state) async {
       notificationViewmodel.fetchAllNotifications();
+      await notificationViewmodel.readNotifications();
     }, builder: (controller) {
       return Scaffold(
         appBar: kCustomInsideAppbar(label: 'Notifications'),

@@ -61,7 +61,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
     // int city_id = userViewModel.user!.city_id ?? 0;
 
     return GetBuilder<UserViewModel>(initState: (state) async {
-      await userViewModel.fetchUserModel(null);
+      await userViewModel.fetchUserModel();
     }, builder: (controller) {
       return Form(
         key: formKey,
@@ -74,7 +74,8 @@ class _UserInfoScreenState extends State<UserInfoScreen>
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [],
+                  children: [
+                  ],
                 ),
                 SizedBox(height: 20),
                 UserDetails(),
@@ -184,7 +185,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
                       email: email.text,
                       address: address.text,
                       city: city_id);
-                  await userViewModel.fetchUserModel(null);
+                  await userViewModel.fetchUserModel();
                   Get.back();
                 }
               },
@@ -251,7 +252,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>
                       ac_holder_name: ac_holder_name.text,
                       ac_number: ac_number.text,
                       ifsc: ifsc.text);
-                  await userViewModel.fetchUserModel(null);
+                  await userViewModel.fetchUserModel();
 
                   Get.back();
                 }

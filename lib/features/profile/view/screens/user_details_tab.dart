@@ -16,7 +16,7 @@ class UserDetails extends StatefulWidget {
 class _UserDetailsState extends State<UserDetails> {
   final userViewModel = Get.find<UserViewModel>();
 
-  @protected
+  //@protected
 //   late QrImage qrImage;
 
   @override
@@ -48,11 +48,10 @@ class _UserDetailsState extends State<UserDetails> {
             ),
             SizedBox(height: 10),
             _buildDetailRow('User Name', controller.user!.username!),
-            _buildDetailRow('Club Name', 'Bronze Club'),
+            // _buildDetailRow('Club Name', 'Bronze Club'),
             // _buildDetailRow('ID', controller.user!.member_id!),
             _buildDetailRow('Contact', controller.user!.mobile!),
             _buildDetailRow('Email', controller.user!.email.toString()),
-            _buildDetailRow('City', controller.user!.city),
             // _buildDetailRow('State', 'Maharashtra'),
             SizedBox(height: 20),
           ],

@@ -19,8 +19,8 @@ class BottomNavigationScreen extends StatefulWidget {
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  int currentIndex = 0;
-  PageController pageController = PageController();
+  int currentIndex = 1;
+  PageController pageController = PageController(initialPage: 1);
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -65,7 +65,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       BottomNavigationBarItem(
           label: 'Lead',
           icon: Icon(
-            CupertinoIcons.home,
+            Icons.leaderboard,
           )),
       BottomNavigationBarItem(
           label: 'Dashboard',

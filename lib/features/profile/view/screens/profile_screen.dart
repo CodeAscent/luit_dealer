@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userViewModel = Get.find<UserViewModel>();
     return GetBuilder<UserViewModel>(initState: (state) {
-      userViewModel.fetchUserModel(null);
+      userViewModel.fetchUserModel();
     }, builder: (controller) {
       return Scaffold(
         appBar: AppBar(
@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(160),
                     child: Image.network(
-                        "https://dealer.luitfanclub.com/storage/uploads/${controller.user!.username}/" +
+                        "https://dealer.luitfanclub.com/storage/uploads/${controller.user!.image}/" +
                             controller.user!.logo!,
                         height: 140,
                         width: 140,

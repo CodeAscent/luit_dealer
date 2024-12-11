@@ -26,15 +26,21 @@ class HttpWrapper {
       return {
         'content-type': 'application/json',
         'Authorization': 'Bearer ${await token()}'
+        // 'Authorization':
+        //     'Bearer 745|gBOhSaOzRstJXBFuPWwlHanMtwEc5NkBnRRFZbpXa5cc8d01'
       };
     }
   }
 
   //   : {'content-type': 'application/json', 'Authorization': 'Bearer $token'};
 
-  static Future<http.Response> getRequest(String value) async {
+  static Future<http.Response> getRequest(String value,
+      {Map<String, dynamic>? queryParameters}) async {
     try {
-      final Uri url = Uri.parse(base_url + value);
+      final url =
+          Uri.parse(base_url + value).replace(queryParameters: queryParameters);
+      print('Request URL: ${url.toString()}');
+
       final res = await http.get(url, headers: await header());
       return res;
     } catch (e) {
@@ -46,8 +52,12 @@ class HttpWrapper {
     try {
       Logger().w(body);
       final Uri url = Uri.parse(base_url + value);
+      print('--------> $url');
+
       final res =
           await http.post(url, body: jsonEncode(body), headers: await header());
+      print('--------> ${res.body}');
+
       return res;
     } catch (e) {
       throw ServerException(e.toString());

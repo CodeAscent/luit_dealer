@@ -9,7 +9,6 @@ class NotificationModel {
 
   NotificationModel(this.id, this.name, this.subtitle, this.image);
 
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -30,5 +29,6 @@ class NotificationModel {
 
   String toJson() => json.encode(toMap());
 
-  factory NotificationModel.fromJson(String source) => NotificationModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory NotificationModel.fromJson(String source) =>
+      NotificationModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

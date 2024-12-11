@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
   final bool? readOnly;
   final bool? isPhone;
   final String? initialValue;
+  final bool? isPassword;
   const CustomTextField({
     super.key,
     this.validator,
@@ -24,6 +25,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.isPhone = false,
     this.initialValue,
+    this.isPassword = false,
   });
 
   @override
@@ -32,6 +34,7 @@ class CustomTextField extends StatelessWidget {
       initialValue: initialValue,
       onChanged: onChanged,
       maxLength: maxLength,
+      obscureText: isPassword!,
       validator: validator ??
           (val) {
             if (val == '') {
