@@ -56,6 +56,27 @@ class _LeadScreenState extends State<LeadScreen> {
             future: fetchData(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                // Check if dataa is null or empty
+                if (dataa == null || dataa.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search_off,  // Icon for no leads
+                          size: 50,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'No leads found',
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
                 return SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -69,8 +90,8 @@ class _LeadScreenState extends State<LeadScreen> {
                           data: data,
                           onTap: () {
                             Get.to(() => LeadDetailsTabBar(
-                                      r_id: data['r_id'],
-                                    ))!
+                              r_id: data['r_id'],
+                            ))!
                                 .then((val) {
                               refresh();
                             });
@@ -94,42 +115,44 @@ class _LeadScreenState extends State<LeadScreen> {
           ),
         ),
         Positioned(
-            // top: 6,
-            right: 20,
-            child: SafeArea(
-              child: 
-              IconButton(
-                  onPressed: () {
-                    Get.to(() => NotificationsScreen())!.then((val) {
-                      fetchNotifications();
-                    });
-                  },
-                  icon: Stack(
-                    children: [
-                      Icon(
-                        Icons.notifications,
-                        size: 40,
-                        color: Colors.white,
+          right: 20,
+          child: SafeArea(
+            child: IconButton(
+              onPressed: () {
+                Get.to(() => NotificationsScreen())!.then((val) {
+                  fetchNotifications();
+                });
+              },
+              icon: Stack(
+                children: [
+                  Icon(
+                    Icons.notifications,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                  if (notifCount != 0)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.red,
+                        radius: 10,
+                        child: Center(
+                          child: Text(
+                            notifCount.toString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w800),
+                          ),
+                        ),
                       ),
-                      if (notifCount != 0)
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: CircleAvatar(
-                              backgroundColor: Colors.red,
-                              radius: 10,
-                              child: Center(
-                                  child: Text(
-                                notifCount.toString(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w800),
-                              ))),
-                        )
-                    ],
-                  )),
-            ))
+                    )
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -260,7 +283,7 @@ class LeadCard extends StatelessWidget {
                 child: Row(
                   children: [
                     _buildChip(
-                      'Lost Purchase',
+                      data['lead_status']?['title'] ?? '',
                       Icons.radio_button_checked,
                     ),
                     SizedBox(width: 8),

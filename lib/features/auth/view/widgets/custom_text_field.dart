@@ -13,6 +13,8 @@ class CustomTextField extends StatelessWidget {
   final bool? isPhone;
   final String? initialValue;
   final bool? isPassword;
+  final VoidCallback? onTap;
+
   const CustomTextField({
     super.key,
     this.validator,
@@ -26,35 +28,42 @@ class CustomTextField extends StatelessWidget {
     this.isPhone = false,
     this.initialValue,
     this.isPassword = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      initialValue: initialValue,
-      onChanged: onChanged,
-      maxLength: maxLength,
-      obscureText: isPassword!,
-      validator: validator ??
-          (val) {
-            if (val == '') {
-              return 'enter $hint';
-            } else if (isPhone! && val!.length < 10) {
-              return 'please enter a valid phone number';
-            }
-            return null;
-          },
-      controller: controller,
-      readOnly: readOnly ?? false,
-      keyboardType: type,
-      inputFormatters: [
-        if (type == TextInputType.phone) FilteringTextInputFormatter.digitsOnly,
-      ],
-      decoration: InputDecoration(
-        suffixIcon: suffix,
-        counterText: '',
-        hintText: hint,
-        border: OutlineInputBorder(),
+    return GestureDetector(
+      onTap: onTap,
+      child: AbsorbPointer(
+        absorbing: readOnly ?? false,
+        child: TextFormField(
+          initialValue: initialValue,
+          onChanged: onChanged,
+          maxLength: maxLength,
+          obscureText: isPassword!,
+          validator: validator ??
+                  (val) {
+                if (val == '') {
+                  return 'Enter $hint';
+                } else if (isPhone! && val!.length < 10) {
+                  return 'Please enter a valid phone number';
+                }
+                return null;
+              },
+          controller: controller,
+          keyboardType: type,
+          inputFormatters: [
+            if (type == TextInputType.phone)
+              FilteringTextInputFormatter.digitsOnly,
+          ],
+          decoration: InputDecoration(
+            suffixIcon: suffix,
+            counterText: '',
+            hintText: hint,
+            border: OutlineInputBorder(),
+          ),
+        ),
       ),
     );
   }

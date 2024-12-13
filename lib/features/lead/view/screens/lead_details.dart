@@ -325,8 +325,8 @@ class LeadDetailsTab extends StatelessWidget {
             //   buildDetailRow('First Downline', 'Not Delivered Yet'),
             //   buildDetailRow('Second Downline', 'Not Delivered Yet'),
             //   buildDetailRow('Third Downline', 'Not Delivered Yet'),
-            buildDetailRowWithLink(
-                'Remarks', data['remarks'] ?? 'No remarks', ''),
+            // buildDetailRowWithLink(
+            //     'Remarks', data['remarks'] ?? 'No remarks', ''),
             SizedBox(height: 24),
             buildSectionTitle('Lead Details'),
             buildDetailRow('Model', data['products']?['title'] ?? ''),
@@ -335,7 +335,7 @@ class LeadDetailsTab extends StatelessWidget {
             SizedBox(height: 24),
             buildSectionTitle('Lead Status'),
             buildDetailRow(
-                'Next Follow Up',
+                'Next Follow Up Date',
                 customDateFormat(
                         date: data['next_followup_date'],
                         format: 'dd MM yyyy') ??
@@ -381,39 +381,46 @@ class LeadDetailsTab extends StatelessWidget {
                                       CustomTextField(
                                         readOnly: true,
                                         controller: _priority,
-                                        suffix: DropdownButton(
-                                          underline: SizedBox(),
-                                          items: [
-                                            DropdownMenuItem(
-                                              value: 'Cold',
-                                              child: Text('Cold'),
+                                        hint: "Select Priority",
+                                        suffix: Icon(Icons.arrow_drop_down),
+                                        onTap: () async {
+                                          final result = await showDialog<String>(
+                                            context: context,
+                                            builder: (context) => SimpleDialog(
+                                              title: Text("Select Priority"),
+                                              children: [
+                                                SimpleDialogOption(
+                                                  onPressed: () => Navigator.pop(context, 'Cold'),
+                                                  child: Text('Cold'),
+                                                ),
+                                                SimpleDialogOption(
+                                                  onPressed: () => Navigator.pop(context, 'Warm'),
+                                                  child: Text('Warm'),
+                                                ),
+                                                SimpleDialogOption(
+                                                  onPressed: () => Navigator.pop(context, 'Hot'),
+                                                  child: Text('Hot'),
+                                                ),
+                                              ],
                                             ),
-                                            DropdownMenuItem(
-                                              value: 'Hot',
-                                              child: Text('Hot'),
-                                            ),
-                                            DropdownMenuItem(
-                                              value: 'Warm',
-                                              child: Text('Warm'),
-                                            )
-                                          ],
-                                          onChanged: (val) {
-                                            switch (val) {
+                                          );
+                                          if (result != null) {
+                                            _priority.text = result;
+                                            switch (result) {
                                               case 'Cold':
                                                 _priorityNumber.text = '1';
-                                                _priority.text = 'Cold';
+                                                break;
                                               case 'Warm':
                                                 _priorityNumber.text = '2';
-                                                _priority.text = 'Warm';
+                                                break;
                                               case 'Hot':
                                                 _priorityNumber.text = '3';
-                                                _priority.text = 'Hot';
                                                 break;
-                                              default:
                                             }
-                                          },
-                                        ),
+                                          }
+                                        },
                                       )
+
                                     ],
                                   ),
                                 ),

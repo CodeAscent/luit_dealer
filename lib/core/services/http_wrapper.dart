@@ -19,6 +19,7 @@ class HttpWrapper {
 
   static Future<Map<String, String>> header() async {
     if (await token() == null) {
+
       return {
         'content-type': 'application/json',
       };
@@ -40,6 +41,7 @@ class HttpWrapper {
       final url =
           Uri.parse(base_url + value).replace(queryParameters: queryParameters);
       print('Request URL: ${url.toString()}');
+      print('Request URL: ${await token()}');
 
       final res = await http.get(url, headers: await header());
       return res;

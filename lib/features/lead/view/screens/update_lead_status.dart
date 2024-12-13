@@ -17,6 +17,7 @@ class UpdateLeadStatus extends StatefulWidget {
 
 class _UpdateLeadStatusState extends State<UpdateLeadStatus> {
   List statusList = [];
+  Map<int, TextEditingController> remarkControllers = {};
   int selectedStatusId = 0;
   @override
   void initState() {
@@ -30,6 +31,9 @@ class _UpdateLeadStatusState extends State<UpdateLeadStatus> {
     final res = await leadListViewmodel.getStatusList();
     if (res != null) {
       statusList = res;
+      for (var status in statusList) {
+        remarkControllers[status['id']] = TextEditingController();
+      }
     }
     setState(() {
       isLoading = false;
@@ -43,111 +47,86 @@ class _UpdateLeadStatusState extends State<UpdateLeadStatus> {
       bottomNavigationBar: CustomOrangeButtom(
         label: 'Update Status',
         onPressed: () async {
-          final _remark = TextEditingController();
-          final _formKey = GlobalKey<FormState>();
-          if (selectedStatusId != 0) {
-            final selectedData =
-                statusList.where((e) => e['id'] == selectedStatusId).first;
-            String title = selectedData['title'];
-
+          if (selectedStatusId != 0 && remarkControllers[selectedStatusId]?.text.isNotEmpty == true) {
             await leadListViewmodel.updateLeadStatus(
-                r_id: widget.data['r_id'].toString(),
-                remark: title,
-                lead_status: selectedStatusId);
-            // showDialog(
-            //   context: context,
-            //   builder: (context) {
-            //     return AlertDialog(
-            //       title: Text('Add Remark'),
-            //       content: Form(
-            //         key: _formKey,
-            //         child: CustomTextField(
-            //           hint: 'Write a remark...',
-            //           controller: _remark,
-            //           validator: (p0) {
-            //             if (_remark.text == '') {
-            //               return 'Write a valid remark...';
-            //             }
-            //             return null;
-            //           },
-            //         ),
-            //       ),
-            //       actions: [
-            //         TextButton(
-            //             onPressed: () {
-            //               Get.back();
-            //             },
-            //             child: Text('Cancel')),
-            //         TextButton(
-            //             onPressed: () async {
-            //               if (_formKey.currentState!.validate()) {
-            //                 await leadListViewmodel.updateLeadStatus(
-            //                     r_id: widget.data['r_id'].toString(),
-            //                     remark: _remark.text,
-            //                     lead_status: selectedStatusId);
-            //                 Get.back();
-            //               }
-            //             },
-            //             child: Text('Ok'))
-            //       ],
-            //     );
-            //   },
-            // );
+              r_id: widget.data['r_id'].toString(),
+              remark: remarkControllers[selectedStatusId]!.text,
+              lead_status: selectedStatusId,
+            );
+            Get.back();
+          } else {
+            Get.snackbar('Error', 'Please select a status and provide a remark.');
           }
         },
       ),
       body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? Center(child: CircularProgressIndicator())
           : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Select Status',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Divider(
-                    thickness: 1,
-                    color: Colors.orange.shade100,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: statusList.length,
-                      itemBuilder: (context, index) {
-                        return CheckboxListTile(
-                          activeColor: AppColors.primaryColor,
-                          title: Text(
-                            statusList[index]['title'],
-                            style: TextStyle(
-                              fontWeight:
-                                  selectedStatusId == statusList[index]['id']
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                              fontSize: 14,
-                            ),
-                          ),
-                          value: selectedStatusId == statusList[index]['id'],
-                          onChanged: (bool? value) {
-                            setState(() {
-                              selectedStatusId = statusList[index]['id'];
-                            });
-                          },
-                          controlAffinity: ListTileControlAffinity.trailing,
-                        );
-                      },
-                    ),
-                  ),
-                ],
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Select Status',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor,
               ),
             ),
+            SizedBox(height: 8),
+            Divider(thickness: 1, color: Colors.orange.shade100),
+            Expanded(
+              child: ListView.builder(
+                itemCount: statusList.length,
+                itemBuilder: (context, index) {
+                  final status = statusList[index];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CheckboxListTile(
+                        activeColor: AppColors.primaryColor,
+                        title: Text(
+                          status['title'],
+                          style: TextStyle(
+                            fontWeight: selectedStatusId == status['id']
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                        ),
+                        value: selectedStatusId == status['id'],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            selectedStatusId = value == true ? status['id'] : 0;
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity.trailing,
+                      ),
+                      if (selectedStatusId == status['id'])
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
+                          child: CustomTextField(
+                            hint: 'Enter a remark...',
+                            controller: remarkControllers[status['id']]!,
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    for (var controller in remarkControllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 }
