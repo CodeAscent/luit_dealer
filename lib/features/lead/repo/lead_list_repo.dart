@@ -71,11 +71,11 @@ class LeadListRepo {
     }
   }
 
-  Future addRemark({required String remarks, required String r_id}) async {
+  Future addRemark({required String remarks, required String r_id,String? nextFollowupDate,String? expectedDeliveryDate}) async {
     try {
       final res = await HttpWrapper.postRequest(
-          '${salesOrDealer()}/add_remarks', {"r_id": r_id, "remarks": remarks});
-      final data = jsonDecode(res.body);
+          '${salesOrDealer()}/add_remarks', {"r_id": r_id, "remarks": remarks,"next_followup_date":nextFollowupDate,"expected_delivery_date":expectedDeliveryDate});
+      final data = jsonDecode(res.body);  
 
       if (res.statusCode == 200) {
         return data;

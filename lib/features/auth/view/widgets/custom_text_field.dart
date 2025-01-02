@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
+
+
 class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final TextEditingController? controller;
   final String? hint;
+  final bool isRequired;
   final int? maxLength;
   final TextInputType? type;
   final Widget? suffix;
@@ -26,6 +30,7 @@ class CustomTextField extends StatelessWidget {
     this.readOnly,
     this.onChanged,
     this.isPhone = false,
+    this.isRequired = true,
     this.initialValue,
     this.isPassword = false,
     this.onTap,
@@ -42,15 +47,17 @@ class CustomTextField extends StatelessWidget {
           onChanged: onChanged,
           maxLength: maxLength,
           obscureText: isPassword!,
-          validator: validator ??
+          validator: isRequired
+              ? validator ??
                   (val) {
-                if (val == '') {
-                  return 'Enter $hint';
-                } else if (isPhone! && val!.length < 10) {
-                  return 'Please enter a valid phone number';
-                }
-                return null;
-              },
+                    if (val == '') {
+                      return 'Enter $hint';
+                    } else if (isPhone! && val!.length < 10) {
+                      return 'Please enter a valid phone number';
+                    }
+                    return null;
+                  }
+              : null,
           controller: controller,
           keyboardType: type,
           inputFormatters: [
