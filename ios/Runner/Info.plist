@@ -47,5 +47,13 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>We need access to your camera for taking profile pictures.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need access to your photo library for selecting profile pictures.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>We need access to your photo library for saving the selected pictures.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>This app does not use the microphone, but we need to comply with Apple requirements.</string>
 	</dict>
 </plist>
