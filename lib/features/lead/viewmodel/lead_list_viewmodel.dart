@@ -32,15 +32,16 @@ class LeadListViewmodel extends GetxController {
   Future getRemarks({required String r_id}) async {
     try {
       final res = await leadListRepo.getRemarks(r_id: r_id);
+            Logger().w(res);
       return res['data'];
     } catch (e) {
       customSnackbar(e.toString(), ContentType.failure);
     }
   }
 
-  Future addRemark({required String r_id, required String remark}) async {
+  Future addRemark({required String r_id, required String remark, String? nextFollowupDate,String? expectedDeliveryDate}) async {
     try {
-      final res = await leadListRepo.addRemark(r_id: r_id, remarks: remark);
+      final res = await leadListRepo.addRemark(r_id: r_id, remarks: remark,nextFollowupDate: nextFollowupDate,expectedDeliveryDate: expectedDeliveryDate);
       if (res != null) {
         customSnackbar('Remark added successfully', ContentType.success);
       }

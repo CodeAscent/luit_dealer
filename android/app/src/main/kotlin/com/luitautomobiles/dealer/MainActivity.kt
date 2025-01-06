@@ -1,4 +1,4 @@
-package com.example.luit_dealer
+package com.luitautomobiles.dealer
 
 import io.flutter.embedding.android.FlutterActivity
 

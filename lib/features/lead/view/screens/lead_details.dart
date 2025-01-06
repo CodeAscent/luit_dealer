@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:luit_dealer/core/constants/custom_inside_app_bar.dart';
 import 'package:luit_dealer/core/local/init_local_storage.dart';
 import 'package:luit_dealer/core/theme/app_colors.dart';
@@ -200,6 +201,8 @@ class _LeadDetailsTabBarState extends State<LeadDetailsTabBar>
               });
             } else {
               final _remark = TextEditingController();
+              final _nextFollowupDate = TextEditingController();
+              final _expectedDeliveryDate = TextEditingController();
               final _formKey = GlobalKey<FormState>();
               showDialog(
                 context: context,
@@ -208,15 +211,56 @@ class _LeadDetailsTabBarState extends State<LeadDetailsTabBar>
                     title: Text('Add Remark'),
                     content: Form(
                       key: _formKey,
-                      child: CustomTextField(
-                        hint: 'Write a remark...',
-                        controller: _remark,
-                        validator: (p0) {
-                          if (_remark.text == '') {
-                            return 'Write a valid remark...';
-                          }
-                          return null;
-                        },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomTextField(
+                            hint: 'Write a remark...',
+                            controller: _remark,
+                            validator: (p0) {
+                              if (_remark.text == '') {
+                                return 'Write a valid remark...';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16),
+                          CustomTextField(
+                            hint: 'Next Follow-up Date',
+                            controller: _nextFollowupDate,
+                            isRequired: false,
+                            readOnly: true,
+                            onTap: () async {
+                              final date = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(2100),
+                              );
+                              if (date != null) {
+                                _nextFollowupDate.text = DateFormat('yyyy-MM-dd').format(date);
+                              }
+                            },
+                          ),
+                          SizedBox(height: 16),
+                          CustomTextField(
+                            hint: 'Expected Delivery Date',
+                            controller: _expectedDeliveryDate,
+                            isRequired: false,
+                            readOnly: true,
+                            onTap: () async {
+                              final date = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(), 
+                                lastDate: DateTime(2100),
+                              );
+                              if (date != null) {
+                                _expectedDeliveryDate.text = DateFormat('yyyy-MM-dd').format(date);
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ),
                     actions: [
@@ -230,7 +274,9 @@ class _LeadDetailsTabBarState extends State<LeadDetailsTabBar>
                             if (_formKey.currentState!.validate()) {
                               await leadListViewmodel.addRemark(
                                   r_id: widget.r_id.toString(),
-                                  remark: _remark.text);
+                                  remark: _remark.text,
+                                   nextFollowupDate: _nextFollowupDate.text.isNotEmpty?_nextFollowupDate.text:null,
+                                  expectedDeliveryDate: _expectedDeliveryDate.text.isNotEmpty?_expectedDeliveryDate.text:null);
                               Get.back();
                               fetchData();
                             }
@@ -338,13 +384,19 @@ class LeadDetailsTab extends StatelessWidget {
                 'Next Follow Up Date',
                 customDateFormat(
                         date: data['next_followup_date'],
-                        format: 'dd MM yyyy') ??
+                        format: 'dd-MM-yyyy') ??
+                    ''),
+            buildDetailRow(
+                'Expected Delivery Date',
+                customDateFormat(
+                        date: data['expected_delivery_date'],
+                        format: 'dd-MM-yyyy') ??
                     ''),
             buildDetailRow(
                 'Assigned At',
                 customDateFormat(
                         date: data['dealer_assign_date'],
-                        format: 'dd MM yyyy') ??
+                        format: 'dd-MM-yyyy') ??
                     ''),
             //   buildDetailRow('Status', 'Lost Purchase'),
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
+<plist version="1.0.1">
 	<dict>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -51,5 +51,13 @@
 		<string>This app does not use the microphone, but this permission is included to meet App Store requirements.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>We need access to your camera for taking profile pictures.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need access to your photo library for selecting profile pictures.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>We need access to your photo library for saving the selected pictures.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>This app does not use the microphone, but we need to comply with Apple requirements.</string>
 	</dict>
 </plist>
