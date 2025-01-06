@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Dealer'),
+                      Text('Dealer Sales'),
                       SizedBox(width: 5),
                       CupertinoCheckbox(
                         activeColor: AppColors.primaryColor,
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         },
                       ),
-                      Text('Sales'),
+                      Text('LFC Sales'),
                       SizedBox(width: 5),
                       CupertinoCheckbox(
                         activeColor: AppColors.primaryColor,
