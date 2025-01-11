@@ -51,6 +51,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return MediaQuery(
             data: MediaQuery.of(context).copyWith(
