@@ -66,7 +66,10 @@ class LoginViewModel extends GetxController {
 
     try {
       final res = await loginRepo.userLogin(
-          number: number, password: password, salesOrDealer: salesOrDealer);
+          number: number,
+          password: password,
+          salesOrDealer: salesOrDealer,
+          fcm_token: fcm_token);
 
       if (res != null) {
         await AuthLocalRepo().saveToken(res['data']['token']);

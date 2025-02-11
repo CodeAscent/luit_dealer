@@ -140,12 +140,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 10),
                   Obx(
-                        () => CustomOrangeButtom(
+                    () => CustomOrangeButtom(
                       loading: loginViewModel.loading.value,
                       label: 'Submit',
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          LocalStorage.sharedPreferences.setBool('isSales', isSalesLogin);
+                          LocalStorage.sharedPreferences
+                              .setBool('isSales', isSalesLogin);
                           loginViewModel.login(
                             number: phoneController.text,
                             password: passwordController.text,

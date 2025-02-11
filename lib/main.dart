@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -41,11 +42,11 @@ class _MyAppState extends State<MyApp> {
   final userViewModel = Get.find<UserViewModel>();
 
   void getFcmToken() async {
-    // FirebaseMessaging messaging = FirebaseMessaging.instance;
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // String? token = await messaging.getToken();
-    // loginViewModel.updateFCM(token!);
-    // Logger().i('FCM Token: $token');
+    String? token = await messaging.getToken();
+    loginViewModel.updateFCM(token!);
+    Logger().i('FCM Token: $token');
   }
 
   @override

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "942643135923",
+    "project_id": "luit-user",
+    "storage_bucket": "luit-user.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942643135923:android:359dd5e6ee10ec3efbf7c6",
+        "android_client_info": {
+          "package_name": "com.luitautomobiles.dealer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_Kty7lCIRO1YyopqgHUrG5vsD_qiqA7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942643135923:android:13cead6009f490eafbf7c6",
+        "android_client_info": {
+          "package_name": "com.luitautomobiles.lfc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_Kty7lCIRO1YyopqgHUrG5vsD_qiqA7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
