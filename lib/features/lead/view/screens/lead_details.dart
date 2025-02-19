@@ -12,11 +12,15 @@ import 'package:luit_dealer/features/auth/view/widgets/custom_text_field.dart';
 import 'package:luit_dealer/features/lead/repo/lead_list_repo.dart';
 import 'package:luit_dealer/features/lead/view/screens/update_lead_status.dart';
 import 'package:luit_dealer/features/lead/viewmodel/lead_list_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LeadDetailsTabBar extends StatefulWidget {
   final dynamic r_id;
+  final String mobileNo;
 
-  const LeadDetailsTabBar({Key? key, required this.r_id}) : super(key: key);
+  const LeadDetailsTabBar(
+      {Key? key, required this.r_id, required this.mobileNo})
+      : super(key: key);
 
   @override
   State<LeadDetailsTabBar> createState() => _LeadDetailsTabBarState();
@@ -238,7 +242,8 @@ class _LeadDetailsTabBarState extends State<LeadDetailsTabBar>
                                 lastDate: DateTime(2100),
                               );
                               if (date != null) {
-                                _nextFollowupDate.text = DateFormat('yyyy-MM-dd').format(date);
+                                _nextFollowupDate.text =
+                                    DateFormat('yyyy-MM-dd').format(date);
                               }
                             },
                           ),
@@ -252,11 +257,12 @@ class _LeadDetailsTabBarState extends State<LeadDetailsTabBar>
                               final date = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime.now(), 
+                                firstDate: DateTime.now(),
                                 lastDate: DateTime(2100),
                               );
                               if (date != null) {
-                                _expectedDeliveryDate.text = DateFormat('yyyy-MM-dd').format(date);
+                                _expectedDeliveryDate.text =
+                                    DateFormat('yyyy-MM-dd').format(date);
                               }
                             },
                           ),
@@ -275,8 +281,14 @@ class _LeadDetailsTabBarState extends State<LeadDetailsTabBar>
                               await leadListViewmodel.addRemark(
                                   r_id: widget.r_id.toString(),
                                   remark: _remark.text,
-                                   nextFollowupDate: _nextFollowupDate.text.isNotEmpty?_nextFollowupDate.text:null,
-                                  expectedDeliveryDate: _expectedDeliveryDate.text.isNotEmpty?_expectedDeliveryDate.text:null);
+                                  nextFollowupDate:
+                                      _nextFollowupDate.text.isNotEmpty
+                                          ? _nextFollowupDate.text
+                                          : null,
+                                  expectedDeliveryDate:
+                                      _expectedDeliveryDate.text.isNotEmpty
+                                          ? _expectedDeliveryDate.text
+                                          : null);
                               Get.back();
                               fetchData();
                             }
@@ -303,7 +315,10 @@ class _LeadDetailsTabBarState extends State<LeadDetailsTabBar>
                 child: CircularProgressIndicator(),
               )
             : TabBarView(controller: _tabController, children: [
-                LeadDetailsTab(data: data),
+                LeadDetailsTab(
+                  data: data,
+                  mobileNo: widget.mobileNo,
+                ),
                 RemarksTab(
                   remarks: remarks,
                 )
@@ -352,10 +367,15 @@ class RemarksTab extends StatelessWidget {
   }
 }
 
+void launchPhone(String phoneNumber) async {
+  String url = 'tel:$phoneNumber';
+  await launchUrl(Uri.parse(url));
+}
+
 class LeadDetailsTab extends StatelessWidget {
   final Map<String, dynamic> data;
-  const LeadDetailsTab({super.key, required this.data});
-
+  const LeadDetailsTab({super.key, required this.data, required this.mobileNo});
+  final String mobileNo;
   @override
   Widget build(BuildContext context) {
     final leadListViewmodel = Get.put(LeadListViewmodel(LeadListRepo()));
@@ -368,6 +388,20 @@ class LeadDetailsTab extends StatelessWidget {
             buildSectionTitle('Profile Details'),
             buildDetailRow('ID', data?['r_id'].toString() ?? ''),
             buildDetailRow('Name', data['user']?['firstname'] ?? ''),
+            Row(
+              children: [
+                buildDetailRow('Mobile', mobileNo ?? ''),
+                Spacer(),
+                IconButton(
+                    onPressed: () {
+                      launchPhone(mobileNo);
+                    },
+                    icon: Icon(
+                      Icons.call,
+                      color: AppColors.primaryColor,
+                    ))
+              ],
+            ),
             //   buildDetailRow('First Downline', 'Not Delivered Yet'),
             //   buildDetailRow('Second Downline', 'Not Delivered Yet'),
             //   buildDetailRow('Third Downline', 'Not Delivered Yet'),
@@ -436,21 +470,28 @@ class LeadDetailsTab extends StatelessWidget {
                                         hint: "Select Priority",
                                         suffix: Icon(Icons.arrow_drop_down),
                                         onTap: () async {
-                                          final result = await showDialog<String>(
+                                          final result =
+                                              await showDialog<String>(
                                             context: context,
                                             builder: (context) => SimpleDialog(
                                               title: Text("Select Priority"),
                                               children: [
                                                 SimpleDialogOption(
-                                                  onPressed: () => Navigator.pop(context, 'Cold'),
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'Cold'),
                                                   child: Text('Cold'),
                                                 ),
                                                 SimpleDialogOption(
-                                                  onPressed: () => Navigator.pop(context, 'Warm'),
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'Warm'),
                                                   child: Text('Warm'),
                                                 ),
                                                 SimpleDialogOption(
-                                                  onPressed: () => Navigator.pop(context, 'Hot'),
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'Hot'),
                                                   child: Text('Hot'),
                                                 ),
                                               ],
@@ -472,7 +513,6 @@ class LeadDetailsTab extends StatelessWidget {
                                           }
                                         },
                                       )
-
                                     ],
                                   ),
                                 ),

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:logger/logger.dart';
+import 'package:luit_dealer/core/local/init_local_storage.dart';
 import 'package:luit_dealer/core/utils/custom_snackbar.dart';
 import 'package:luit_dealer/features/auth/model/user_model.dart';
 import 'package:luit_dealer/features/auth/repo/auth_local_repo.dart';
@@ -56,6 +58,16 @@ class LoginViewModel extends GetxController {
 //     }
 //     loading.value = false;
 //   }
+  void subscribeToTopics() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    if (LocalStorage.sharedPreferences.getBool('isSales') ?? false) {
+      await messaging.subscribeToTopic('sales');
+      Logger().f('Subscribed as sales');
+    } else {
+      await messaging.subscribeToTopic('dealer');
+      Logger().f('Subscribed as dealer');
+    }
+  }
 
   login({
     required String number,
@@ -74,6 +86,7 @@ class LoginViewModel extends GetxController {
       if (res != null) {
         await AuthLocalRepo().saveToken(res['data']['token']);
         await userViewModel.fetchUserModel();
+        subscribeToTopics();
         Get.to(() => BottomNavigationScreen());
       }
     } catch (e) {

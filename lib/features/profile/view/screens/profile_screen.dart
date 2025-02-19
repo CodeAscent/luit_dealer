@@ -31,15 +31,24 @@ class ProfileScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(160),
                     child: Image.network(
-                        "https://dealer.luitfanclub.com/storage/uploads/${controller.user!.image}/" +
-                            controller.user!.logo!,
-                        height: 140,
-                        width: 140,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                              CupertinoIcons.person,
-                              size: 40,
-                            )),
+                      "https://dealer.luitfanclub.com/storage/uploads/${controller.user!.image}/" +
+                          controller.user!.logo!,
+                      height: 140,
+                      width: 140,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          userViewModel.user!.gender == 'M'
+                              ? Image.asset(
+                                  'assets/icons/boy.png',
+                                  height: 40,
+                                  width: 40,
+                                )
+                              : Image.asset(
+                                  'assets/icons/girl.png',
+                                  height: 40,
+                                  width: 40,
+                                ),
+                    ),
                   ),
                   // Replace with actual image URL
                 ),
@@ -115,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
                   //     // Handle Bank Details tap
                   //   },
                   // ),
-                
+
                   Divider(),
                   ListTile(
                     title: Text('Support & Information'),

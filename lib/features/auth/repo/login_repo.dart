@@ -30,13 +30,17 @@ class LoginRepo {
     required String password,
     required String salesOrDealer,
     required String? fcm_token,
-
   }) async {
     try {
+      Logger().f({
+        "mobile_no": number,
+        "password": password,
+        if (fcm_token != null) "fcm_token": fcm_token,
+      });
       final res = await HttpWrapper.postRequest('${salesOrDealer}/login', {
         "mobile_no": number,
         "password": password,
-          if (fcm_token != null) "fcm_token": fcm_token,
+        if (fcm_token != null) "fcm_token": fcm_token,
       });
 
       final data = jsonDecode(res.body);

@@ -25,31 +25,32 @@ class UserModel {
   String? updated_at;
   String? deleted_at;
   String? image;
-  UserModel({
-    this.id,
-    this.category,
-    this.brand,
-    this.name,
-    this.email,
-    this.username,
-    this.mobile,
-    this.address,
-    this.country,
-    this.city,
-    this.state,
-    this.pin,
-    this.logo,
-    this.doc1,
-    this.doc2,
-    this.doc3,
-    this.deposit_amount,
-    this.status,
-    this.reg_status,
-    this.created_at,
-    this.updated_at,
-    this.deleted_at,
-    this.image,
-  });
+  String? gender;
+  UserModel(
+      {this.id,
+      this.category,
+      this.brand,
+      this.name,
+      this.email,
+      this.username,
+      this.mobile,
+      this.address,
+      this.country,
+      this.city,
+      this.state,
+      this.pin,
+      this.logo,
+      this.doc1,
+      this.doc2,
+      this.doc3,
+      this.deposit_amount,
+      this.status,
+      this.reg_status,
+      this.created_at,
+      this.updated_at,
+      this.deleted_at,
+      this.image,
+      this.gender});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -76,6 +77,7 @@ class UserModel {
       'updated_at': updated_at,
       'deleted_at': deleted_at,
       'image': image,
+      'gender': gender
     };
   }
 
@@ -105,6 +107,7 @@ class UserModel {
       updated_at: map['updated_at'] != null ? map['updated_at'] as String : '',
       deleted_at: map['deleted_at'] != null ? map['deleted_at'] as String : '',
       image: map['image'] != null ? map['image'] as String : '',
+      gender: map['gender'] != null ? map['gender'] as String : '',
     );
   }
 

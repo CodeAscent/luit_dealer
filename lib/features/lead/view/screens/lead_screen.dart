@@ -63,7 +63,7 @@ class _LeadScreenState extends State<LeadScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.search_off,  // Icon for no leads
+                          Icons.search_off, // Icon for no leads
                           size: 50,
                           color: Colors.grey,
                         ),
@@ -90,8 +90,9 @@ class _LeadScreenState extends State<LeadScreen> {
                           data: data,
                           onTap: () {
                             Get.to(() => LeadDetailsTabBar(
-                              r_id: data['r_id'],
-                            ))!
+                                      mobileNo: data['user']['mobile_no'] ?? '',
+                                      r_id: data['r_id'],
+                                    ))!
                                 .then((val) {
                               refresh();
                             });
