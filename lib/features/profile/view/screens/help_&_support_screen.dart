@@ -36,9 +36,9 @@ class HelpAndSupportScreen extends StatelessWidget {
             GestureDetector(
               child: SupportCard(
                 onTap: () {
-                  _launchEmail('luitfanclub@gmail.com');
+                  _launchEmail('luitearnclub@gmail.com');
                 },
-                email: 'luitfanclub@gmail.com',
+                email: 'luitearnclub@gmail.com',
                 description: 'Email us for any support',
                 icon: 'assets/icons/Circled Envelope-1.png',
               ),

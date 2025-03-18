@@ -1,0 +1,2 @@
+/Users/harsh/Development/luit/luit_dealer/android/app/.cxx/Debug/10b16h3t/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/harsh/Development/luit/luit_dealer/android/app/.cxx/Debug/10b16h3t/armeabi-v7a/CMakeFiles/rebuild_cache.dir

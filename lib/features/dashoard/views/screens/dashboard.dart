@@ -18,7 +18,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final dashboardViewmodel = DashboardViewmodel(DashboardRepo());
   int? selectedWeek;
-  int? selectedMonth;  // Month index (0 for January, 1 for February, etc.)
+  int? selectedMonth; // Month index (0 for January, 1 for February, etc.)
   int? selectedYear;
   String? selectedDate;
   int notifCount = 0;
@@ -42,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   fetchData() async {
     data = await dashboardViewmodel.getDashboard(
       week: selectedWeek,
-      month: selectedMonth != null?selectedMonth!+1:null,
+      month: selectedMonth != null ? selectedMonth! + 1 : null,
       year: selectedYear,
       date: selectedDate,
     );
@@ -77,14 +77,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     // List of month names
     final List<String> monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ];
 
     return Stack(
       children: [
         Scaffold(
-            appBar: customAppBar(label: 'LUIT FAN CLUB', showLeading: false),
+            appBar: customAppBar(label: 'LUIT EARN CLUB', showLeading: false),
             body: FutureBuilder(
               future: fetchData(),
               builder: (context, snapshot) {
@@ -103,93 +113,95 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       title: Text('Lead Filter'),
                                       content: StatefulBuilder(
                                           builder: (context, setState) {
-                                            return Wrap(
-                                              children: [
-                                                Padding(
-                                                  padding:
+                                        return Wrap(
+                                          children: [
+                                            Padding(
+                                              padding:
                                                   const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: DropdownButton<int>(
-                                                          hint: Text('Select Week'),
-                                                          value: selectedWeek,
-                                                          items: List.generate(52,
-                                                                  (index) {
-                                                                return DropdownMenuItem(
-                                                                  value: index + 1,
-                                                                  child: Text(
-                                                                      'Week ${index + 1}'),
-                                                                );
-                                                              }),
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              selectedWeek = value;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 8),
-                                                      Expanded(
-                                                        child: DropdownButton<int>(
-                                                          hint: Text('Select Month'),
-                                                          value: selectedMonth,
-                                                          items: List.generate(
-                                                              12, (index) {
-                                                            return DropdownMenuItem(
-                                                              value: index,
-                                                              child: Text(
-                                                                  monthNames[index]),
-                                                            );
-                                                          }),
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              selectedMonth = value;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 8),
-                                                    ],
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: DropdownButton<int>(
+                                                      hint: Text('Select Week'),
+                                                      value: selectedWeek,
+                                                      items: List.generate(52,
+                                                          (index) {
+                                                        return DropdownMenuItem(
+                                                          value: index + 1,
+                                                          child: Text(
+                                                              'Week ${index + 1}'),
+                                                        );
+                                                      }),
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          selectedWeek = value;
+                                                        });
+                                                      },
+                                                    ),
                                                   ),
-                                                ),
-                                                Padding(
-                                                  padding:
+                                                  SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: DropdownButton<int>(
+                                                      hint:
+                                                          Text('Select Month'),
+                                                      value: selectedMonth,
+                                                      items: List.generate(12,
+                                                          (index) {
+                                                        return DropdownMenuItem(
+                                                          value: index,
+                                                          child: Text(
+                                                              monthNames[
+                                                                  index]),
+                                                        );
+                                                      }),
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          selectedMonth = value;
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
                                                   const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 200,
-                                                        child: TextField(
-                                                          decoration:
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 200,
+                                                    child: TextField(
+                                                      decoration:
                                                           InputDecoration(
                                                               hintText:
-                                                              'Enter Year'),
-                                                          keyboardType:
+                                                                  'Enter Year'),
+                                                      keyboardType:
                                                           TextInputType.number,
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              selectedYear =
-                                                                  int.tryParse(
-                                                                      value);
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 8),
-                                                      IconButton(
-                                                        icon: Icon(
-                                                            Icons.calendar_today),
-                                                        onPressed: () =>
-                                                            _selectDate(context),
-                                                      ),
-                                                      SizedBox(width: 8),
-                                                    ],
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          selectedYear =
+                                                              int.tryParse(
+                                                                  value);
+                                                        });
+                                                      },
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            );
-                                          }),
+                                                  SizedBox(width: 8),
+                                                  IconButton(
+                                                    icon: Icon(
+                                                        Icons.calendar_today),
+                                                    onPressed: () =>
+                                                        _selectDate(context),
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }),
                                       actions: [
                                         TextButton(
                                           onPressed: () {
@@ -243,7 +255,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               },
             )),
         Positioned(
-          // top: 6,
+            // top: 6,
             right: 20,
             child: SafeArea(
               child: IconButton(
@@ -268,12 +280,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               radius: 10,
                               child: Center(
                                   child: Text(
-                                    notifCount.toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w800),
-                                  ))),
+                                notifCount.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800),
+                              ))),
                         )
                     ],
                   )),
@@ -304,7 +316,7 @@ class CustomDashboardCard extends StatelessWidget {
       width: double.infinity,
       height: 120,
       decoration:
-      BoxDecoration(borderRadius: BorderRadius.circular(20), color: color),
+          BoxDecoration(borderRadius: BorderRadius.circular(20), color: color),
       child: Center(
         child: Stack(
           children: [

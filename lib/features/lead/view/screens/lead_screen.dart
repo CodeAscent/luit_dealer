@@ -51,7 +51,7 @@ class _LeadScreenState extends State<LeadScreen> {
     return Stack(
       children: [
         Scaffold(
-          appBar: customAppBar(label: 'LUIT FAN CLUB', showLeading: false),
+          appBar: customAppBar(label: 'LUIT EARN CLUB', showLeading: false),
           body: FutureBuilder(
             future: fetchData(),
             builder: (context, snapshot) {

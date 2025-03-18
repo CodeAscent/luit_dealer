@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Image.asset(
-                    'assets/Images/LUIT_page2_image1.png',
+                    'assets/Images/LUIT_page26_image1.png',
                     height: 300,
                   ),
                   Text(
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         },
                       ),
-                      Text('LFC Sales'),
+                      Text('LEC Sales'),
                       SizedBox(width: 5),
                       CupertinoCheckbox(
                         activeColor: AppColors.primaryColor,

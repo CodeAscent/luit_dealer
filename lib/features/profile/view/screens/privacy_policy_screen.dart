@@ -21,7 +21,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'At LUIT Fan Club, we are committed to safeguarding the privacy and security of our users\' personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard the information obtained through our e-commerce app. By using LUIT Fan Club, you consent to the practices described in this policy.',
+              'At LUIT Earn Club, we are committed to safeguarding the privacy and security of our users\' personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard the information obtained through our e-commerce app. By using LUIT Earn Club, you consent to the practices described in this policy.',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 20),
@@ -54,7 +54,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             _buildPolicySection(
               '6. Children\'s Privacy:',
-              '• LUIT Fan Club is not intended for children under the age of 13. We do not knowingly collect or solicit personal information from children.',
+              '• LUIT Earn Club is not intended for children under the age of 13. We do not knowingly collect or solicit personal information from children.',
             ),
             _buildPolicySection(
               '7. Updates to the Privacy Policy:',

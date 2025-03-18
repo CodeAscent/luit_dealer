@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/harsh/Development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/harsh/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/harsh/Development/luit/luit_dealer/android/app/.cxx/RelWithDebInfo/4x2t2y57/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/harsh/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/harsh/Development/luit/luit_dealer/android/app/.cxx/RelWithDebInfo/4x2t2y57/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
